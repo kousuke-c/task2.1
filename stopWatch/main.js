@@ -40,30 +40,32 @@ sc = ('0' + sc).slice(-2);
  time.textContent = m + ':' + sc + ':' + ms;
 }
 
-//
+//カウントを実行するためにループする関数
 function countUp(){
  timeId = setTimeout(function(){
 //経過時刻は現在時刻をミリ秒で示すDate.now()からstartを押した時の時刻(startTime)を引く
  elapsedTime = Date.now() - startTime + timeToadd; 
  timeDisplay();
-//countUp関数自身を呼ぶことで100ミリ秒毎に以下の計算を始める
+//countUp関数自身を呼ぶことで1ミリ秒毎に以下の計算を始める
 countUp();
-
-},100);
+//ストップ時にelapsedTimeとtimeToaddが!==になるエラーが出ないように
+//1ミリ秒単位でsetTimeoutを実行
+},1);
 }
 
 
 //startボタンにclickイベントを追加
 start.addEventListener("click",function(){
 //条件分岐、スタートボタンを連続で押した時のエラーを防ぐ
-  if(elapsedTime===timeToadd){ 
+//100で割って切り捨て
+ if(Math.floor((elapsedTime)/100)===Math.floor(timeToadd/100)){ 
 //startTimeに現在時刻（Date.now）を代入
 startTime = Date.now();
 
 //経過時間を計測する関数を呼び出す
 countUp();
 }
- else{
+ else {
  
  }
 });
@@ -79,11 +81,21 @@ clearTimeout(timeId);
 //なのでスタート時間からストップ時間までの経過時間を足してあげなければならない。
 //elapsedTime = Date.now - startTime + timeToadd 
 //(timeToadd = ストップを押した時刻(Date.now)から直近のスタート時刻(startTime)を引く)
-timeToadd += Date.now() - startTime;
+//.............................
+//この関数上でDate.now - startTime　でtimeToaddになる。
+//また、elapsedTime = Date.now - startTime + timeToadd なので
+//timeToadd = elapsedTimeにする。
+//関数上でtimeToadd = Date.now - startTimeにすると
+//ストップボタンを連打した時にDate.nowが更新され、スタートしなくなるバグが出た
+timeToadd = elapsedTime;
+
+
 });
 
 //resetボタンにclickイベントを追加
 reset.addEventListener("click",function(){
+
+clearTimeout(timeId);
 
 //リセットするのでelapsedTimeは0にする
 elapsedTime = 0;
