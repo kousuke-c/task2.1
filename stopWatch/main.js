@@ -37,7 +37,7 @@ let ms = Math.floor((elapsedTime % 1000) / 100) ;
 sc = ('0' + sc).slice(-2);
  
  //HTMLのclass　time部分に表示させる　
- time.textContent = m + ':' + sc + ':' + ms;
+ time.textContent =m+':'+sc+':'+ms;
 }
 
 //カウントを実行するためにループする関数
@@ -58,6 +58,9 @@ countUp();
 start.addEventListener("click",function(){
 //条件分岐、スタートボタンを連続で押した時のエラーを防ぐ
 //100で割って切り捨て
+//elapsedTimeとtimeToaddがイコールになるのはスタート時両方の値が0の時
+//もしくはストップを一度押してtimetoaddに値が代入された時
+//カウント実行中はelapsedTimeは変化し続け、timeToaddは値が代入されないのでelseが読まれる
  if(Math.floor((elapsedTime)/100)===Math.floor(timeToadd/100)){ 
 //startTimeに現在時刻（Date.now）を代入
 startTime = Date.now();

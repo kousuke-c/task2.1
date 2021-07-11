@@ -17,8 +17,11 @@ font-weight: bold;
 }
 
 .time {
+display: inline;
 font-size: 60px;
 margin-left: 15px;
+
+
 }
 
 
